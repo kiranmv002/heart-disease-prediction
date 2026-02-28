@@ -1,6 +1,6 @@
 # ============================================================
 # Heart Disease Prediction using Logistic Regression and KNN
-# Author: Kiran MV
+# Author: M V Kiran
 # Dataset: heart.csv (UCI Heart Disease Dataset)
 # ============================================================
 
