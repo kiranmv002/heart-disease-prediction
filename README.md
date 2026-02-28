@@ -117,7 +117,7 @@ python heart_disease_prediction.py
 ## 👨‍💻 Author
 
 **Kiran**  
-GitHub: [Kiran](https://github.com/Kiran)
+GitHub: [Kiran](https://github.com/kiranmv002)
 
 ---
 
