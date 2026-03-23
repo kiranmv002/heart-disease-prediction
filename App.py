@@ -125,3 +125,4 @@ if st.button("🔍 Predict", use_container_width=True):
 # -------------------- Footer --------------------
 st.markdown("---")
 st.markdown("**👨‍💻 Developed by M V Kiran** | Heart Disease Prediction using ML")
+st.markdown("> ⚠️ *This app is for educational purposes only. Not a substitute for medical advice.*")
