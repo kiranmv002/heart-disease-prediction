@@ -115,3 +115,9 @@ if st.button("🔍 Predict", use_container_width=True):
     else:
         st.success("✅ **No Heart Disease Detected!**")
         st.info("Keep maintaining a healthy lifestyle!")
+    # Probability
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("No Disease Probability", f"{probability[0]*100:.2f}%")
+    with col2:
+        st.metric("Disease Probability", f"{probability[1]*100:.2f}%")
