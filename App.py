@@ -55,3 +55,32 @@ with col2:
     st.metric("KNN Accuracy (K=5)", f"{knn_acc*100:.2f}%")
 
 st.markdown("---")
+# -------------------- Input Form --------------------
+st.subheader("📋 Enter Patient Details")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    age = st.slider("Age", 29, 77, 50)
+    sex = st.selectbox("Sex", options=[0, 1], format_func=lambda x: "Female" if x == 0 else "Male")
+    cp = st.selectbox("Chest Pain Type", options=[0, 1, 2, 3],
+                      format_func=lambda x: ["Typical Angina", "Atypical Angina", "Non-anginal Pain", "Asymptomatic"][x])
+    trestbps = st.slider("Resting Blood Pressure", 94, 200, 120)
+    chol = st.slider("Cholesterol (mg/dl)", 126, 564, 200)
+
+with col2:
+    fbs = st.selectbox("Fasting Blood Sugar > 120 mg/dl", options=[0, 1],
+                       format_func=lambda x: "No" if x == 0 else "Yes")
+    restecg = st.selectbox("Resting ECG Results", options=[0, 1, 2],
+                           format_func=lambda x: ["Normal", "ST-T Abnormality", "Left Ventricular Hypertrophy"][x])
+    thalach = st.slider("Max Heart Rate Achieved", 71, 202, 150)
+    exang = st.selectbox("Exercise Induced Angina", options=[0, 1],
+                         format_func=lambda x: "No" if x == 0 else "Yes")
+
+with col3:
+    oldpeak = st.slider("ST Depression (Oldpeak)", 0.0, 6.2, 1.0, step=0.1)
+    slope = st.selectbox("Slope of ST Segment", options=[0, 1, 2],
+                         format_func=lambda x: ["Upsloping", "Flat", "Downsloping"][x])
+    ca = st.selectbox("No. of Major Vessels (0-4)", options=[0, 1, 2, 3, 4])
+    thal = st.selectbox("Thalassemia", options=[0, 1, 2, 3],
+                        format_func=lambda x: ["Normal", "Fixed Defect", "Reversible Defect", "Unknown"][x])
