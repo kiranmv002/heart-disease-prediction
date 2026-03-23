@@ -121,3 +121,7 @@ if st.button("🔍 Predict", use_container_width=True):
         st.metric("No Disease Probability", f"{probability[0]*100:.2f}%")
     with col2:
         st.metric("Disease Probability", f"{probability[1]*100:.2f}%")
+
+# -------------------- Footer --------------------
+st.markdown("---")
+st.markdown("**👨‍💻 Developed by M V Kiran** | Heart Disease Prediction using ML")
