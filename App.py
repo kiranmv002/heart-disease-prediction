@@ -84,3 +84,7 @@ with col3:
     ca = st.selectbox("No. of Major Vessels (0-4)", options=[0, 1, 2, 3, 4])
     thal = st.selectbox("Thalassemia", options=[0, 1, 2, 3],
                         format_func=lambda x: ["Normal", "Fixed Defect", "Reversible Defect", "Unknown"][x])
+# -------------------- Model Selection --------------------
+st.markdown("---")
+st.subheader("🤖 Select Model")
+model_choice = st.radio("Choose Algorithm:", ["Logistic Regression", "KNN (K=5)"], horizontal=True)
