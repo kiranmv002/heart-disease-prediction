@@ -42,6 +42,7 @@ def train_models():
     return lr, knn, scaler, lr_acc, knn_acc
 
 lr_model, knn_model, scaler, lr_acc, knn_acc = train_models()
+
 # -------------------- Header --------------------
 st.title("❤️ Heart Disease Prediction")
 st.markdown("### Predict whether a patient has heart disease using Machine Learning")
@@ -55,6 +56,7 @@ with col2:
     st.metric("KNN Accuracy (K=5)", f"{knn_acc*100:.2f}%")
 
 st.markdown("---")
+
 # -------------------- Input Form --------------------
 st.subheader("📋 Enter Patient Details")
 
@@ -84,11 +86,11 @@ with col3:
     ca = st.selectbox("No. of Major Vessels (0-4)", options=[0, 1, 2, 3, 4])
     thal = st.selectbox("Thalassemia", options=[0, 1, 2, 3],
                         format_func=lambda x: ["Normal", "Fixed Defect", "Reversible Defect", "Unknown"][x])
+
 # -------------------- Model Selection --------------------
 st.markdown("---")
 st.subheader("🤖 Select Model")
 model_choice = st.radio("Choose Algorithm:", ["Logistic Regression", "KNN (K=5)"], horizontal=True)
-
 
 # -------------------- Predict Button --------------------
 st.markdown("---")
@@ -115,6 +117,7 @@ if st.button("🔍 Predict", use_container_width=True):
     else:
         st.success("✅ **No Heart Disease Detected!**")
         st.info("Keep maintaining a healthy lifestyle!")
+
     # Probability
     col1, col2 = st.columns(2)
     with col1:
