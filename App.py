@@ -88,3 +88,30 @@ with col3:
 st.markdown("---")
 st.subheader("🤖 Select Model")
 model_choice = st.radio("Choose Algorithm:", ["Logistic Regression", "KNN (K=5)"], horizontal=True)
+
+
+# -------------------- Predict Button --------------------
+st.markdown("---")
+if st.button("🔍 Predict", use_container_width=True):
+
+    input_data = np.array([[age, sex, cp, trestbps, chol, fbs,
+                            restecg, thalach, exang, oldpeak, slope, ca, thal]])
+
+    input_scaled = scaler.transform(input_data)
+
+    if model_choice == "Logistic Regression":
+        prediction = lr_model.predict(input_scaled)[0]
+        probability = lr_model.predict_proba(input_scaled)[0]
+    else:
+        prediction = knn_model.predict(input_scaled)[0]
+        probability = knn_model.predict_proba(input_scaled)[0]
+
+    st.markdown("---")
+    st.subheader("🩺 Prediction Result")
+
+    if prediction == 1:
+        st.error("⚠️ **Heart Disease Detected!**")
+        st.warning("Please consult a doctor immediately.")
+    else:
+        st.success("✅ **No Heart Disease Detected!**")
+        st.info("Keep maintaining a healthy lifestyle!")
