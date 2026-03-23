@@ -42,3 +42,16 @@ def train_models():
     return lr, knn, scaler, lr_acc, knn_acc
 
 lr_model, knn_model, scaler, lr_acc, knn_acc = train_models()
+# -------------------- Header --------------------
+st.title("❤️ Heart Disease Prediction")
+st.markdown("### Predict whether a patient has heart disease using Machine Learning")
+st.markdown("---")
+
+# -------------------- Model Info --------------------
+col1, col2 = st.columns(2)
+with col1:
+    st.metric("Logistic Regression Accuracy", f"{lr_acc*100:.2f}%")
+with col2:
+    st.metric("KNN Accuracy (K=5)", f"{knn_acc*100:.2f}%")
+
+st.markdown("---")
