@@ -256,3 +256,106 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
+
+
+# ==================== PAGE WRAP ====================
+st.markdown("<div style='padding: 28px 36px;'>", unsafe_allow_html=True)
+
+# Page heading
+st.markdown("""
+<div style='margin-bottom:24px;'>
+    <div style='font-size:2.2rem; font-weight:900; color:#1a1a2e; line-height:1.1;'>Overview</div>
+    <div style='font-size:1.1rem; color:#6b7280; margin-top:4px;'>Patient Heart Health Dashboard</div>
+</div>
+""", unsafe_allow_html=True)
+
+# ==================== STAT CARDS ====================
+c1, c2, c3, c4 = st.columns(4)
+with c1:
+    st.markdown(f"""<div class='stat-card'><div class='stat-icon' style='background:#eff6ff;'>🗃️</div><div class='stat-num'>1,025</div><div class='stat-lbl'>Patients Trained</div><div class='stat-change'>↑ UCI Dataset</div></div>""", unsafe_allow_html=True)
+with c2:
+    st.markdown(f"""<div class='stat-card'><div class='stat-icon' style='background:#f0fdf4;'>🔬</div><div class='stat-num'>13</div><div class='stat-lbl'>Features Used</div><div class='stat-change'>↑ Clinical Params</div></div>""", unsafe_allow_html=True)
+with c3:
+    st.markdown(f"""<div class='stat-card'><div class='stat-icon' style='background:#eff6ff;'>📈</div><div class='stat-num'>{lr_acc*100:.1f}%</div><div class='stat-lbl'>LR Accuracy</div><div class='stat-change'>↑ Logistic Regression</div></div>""", unsafe_allow_html=True)
+with c4:
+    st.markdown(f"""<div class='stat-card'><div class='stat-icon' style='background:#f0fdf4;'>🎯</div><div class='stat-num'>{knn_acc*100:.1f}%</div><div class='stat-lbl'>KNN Accuracy</div><div class='stat-change'>↑ Best Model</div></div>""", unsafe_allow_html=True)
+
+st.markdown("<div style='height:24px'></div>", unsafe_allow_html=True)
+
+# ==================== HEART + FORM ====================
+hcol, fcol = st.columns([1, 2])
+
+with hcol:
+    st.markdown("""
+    <div class='heart-visual'>
+        <div class='heart-bg'>🫀</div>
+        <div class='heart-main'>🫀</div>
+        <div style='margin-top:20px;'>
+            <div class='heart-stat-pill'>💓 Heart Rate</div>
+            <div class='heart-stat-pill'>🩸 Blood Pressure</div>
+            <div class='heart-stat-pill'>🧪 Cholesterol</div>
+        </div>
+        <div style='margin-top:16px; font-size:0.78rem; color:#6b7280;'>AI-Powered Heart Analysis</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with fcol:
+    # PERSONAL INFO
+    st.markdown("<div class='form-sec'><div class='form-sec-title'>👤 Personal Information</div>", unsafe_allow_html=True)
+    p1, p2, p3 = st.columns(3)
+    with p1:
+        age = st.slider("🎂 Age", 29, 77, 50)
+        trestbps = st.slider("🩸 Blood Pressure", 94, 200, 120)
+    with p2:
+        sex = st.selectbox("⚧ Sex", [0,1], format_func=lambda x: "👩 Female" if x==0 else "👨 Male")
+        chol = st.slider("🧪 Cholesterol (mg/dl)", 126, 564, 200)
+    with p3:
+        cp = st.selectbox("💢 Chest Pain Type", [0,1,2,3],
+                          format_func=lambda x: ["Typical Angina","Atypical Angina","Non-anginal","Asymptomatic"][x])
+        fbs = st.selectbox("🍬 High Blood Sugar", [0,1], format_func=lambda x: "No" if x==0 else "Yes")
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    # CLINICAL
+    st.markdown("<div class='form-sec'><div class='form-sec-title'>🩺 Clinical Parameters</div>", unsafe_allow_html=True)
+    cl1, cl2, cl3 = st.columns(3)
+    with cl1:
+        restecg = st.selectbox("📉 ECG Results", [0,1,2],
+                               format_func=lambda x: ["Normal","ST-T Abnormal","LV Hypertrophy"][x])
+        thalach = st.slider("💓 Max Heart Rate", 71, 202, 150)
+    with cl2:
+        exang = st.selectbox("🏃 Exercise Angina", [0,1], format_func=lambda x: "No" if x==0 else "Yes")
+        oldpeak = st.slider("📊 ST Depression", 0.0, 6.2, 1.0, step=0.1)
+    with cl3:
+        slope = st.selectbox("📈 ST Slope", [0,1,2],
+                             format_func=lambda x: ["Upsloping","Flat","Downsloping"][x])
+        ca = st.selectbox("🫀 Major Vessels", [0,1,2,3,4])
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    # HEART PARAMS + MODEL
+    st.markdown("<div class='form-sec'><div class='form-sec-title'>🧬 Heart Parameters & Model Selection</div>", unsafe_allow_html=True)
+    hp1, hp2 = st.columns(2)
+    with hp1:
+        thal = st.selectbox("🧬 Thalassemia", [0,1,2,3],
+                            format_func=lambda x: ["Normal","Fixed Defect","Reversible Defect","Unknown"][x])
+    with hp2:
+        model_choice = st.radio("🤖 Select Algorithm", ["Logistic Regression", "KNN (K=5)"], horizontal=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    # ECG BAR
+    hr_status = "⚠️ High" if thalach > 180 else "✅ Normal"
+    hr_color = "#ef4444" if thalach > 180 else "#10b981"
+    st.markdown(f"""
+    <div class='ecg-bar'>
+        <div>
+            <div class='ecg-lbl'>Live ECG Monitor</div>
+            <div class='ecg-val'>❤️ {thalach} bpm &nbsp;·&nbsp; BP {trestbps} mmHg &nbsp;·&nbsp; Chol {chol} mg/dl</div>
+        </div>
+        <div class='ecg-wave'>∿∧∿∿∧∿∿∧∿</div>
+        <div style='text-align:right;'>
+            <div class='ecg-lbl'>Heart Rate Status</div>
+            <div style='font-size:0.85rem; font-weight:700; color:{hr_color};'>{hr_status}</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    predict_btn = st.button("🫀 Analyze Heart Health Now")
