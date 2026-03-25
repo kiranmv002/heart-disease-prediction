@@ -102,3 +102,96 @@ st.markdown("""
 .vb-normal { background: #d1fae5; color: #065f46; }
 .vb-high { background: #fee2e2; color: #991b1b; }
 .vb-warn { background: #fef3c7; color: #92400e; }
+
+/* FORM */
+.form-sec { background: white; border-radius: 18px; padding: 20px; border: 1px solid #eef1f5; box-shadow: 0 2px 10px rgba(0,0,0,0.04); margin-bottom: 16px; }
+.form-sec-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: #2563eb; font-weight: 700; margin-bottom: 16px; }
+
+/* ECG BAR */
+.ecg-bar { background: #1a1a2e; border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.ecg-lbl { font-size: 0.72rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px; }
+.ecg-val { font-size: 1rem; font-weight: 700; color: white; }
+.ecg-wave { font-size: 1.4rem; letter-spacing: -3px; color: #2563eb; animation: blink 1.5s infinite; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+/* RESULT CARDS */
+.result-safe { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border: 2px solid #6ee7b7; border-radius: 20px; padding: 24px; text-align: center; margin-bottom: 16px; box-shadow: 0 4px 20px rgba(16,185,129,0.12); }
+.result-danger { background: linear-gradient(135deg, #fff1f2, #fee2e2); border: 2px solid #fca5a5; border-radius: 20px; padding: 24px; text-align: center; margin-bottom: 16px; box-shadow: 0 4px 20px rgba(239,68,68,0.12); }
+.result-pending { background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 2px dashed #93c5fd; border-radius: 20px; padding: 30px; text-align: center; margin-bottom: 16px; }
+.result-emoji { font-size: 3rem; margin-bottom: 10px; }
+.result-title-safe { font-size: 1.4rem; font-weight: 900; color: #065f46; margin-bottom: 6px; }
+.result-title-danger { font-size: 1.4rem; font-weight: 900; color: #991b1b; margin-bottom: 6px; }
+.result-title-pending { font-size: 1.2rem; font-weight: 700; color: #1d4ed8; margin-bottom: 6px; }
+.result-sub { font-size: 0.85rem; color: #6b7280; }
+
+/* GAUGE */
+.gauge-card { background: white; border-radius: 18px; padding: 20px; border: 1px solid #eef1f5; box-shadow: 0 2px 10px rgba(0,0,0,0.04); margin-bottom: 14px; }
+.gauge-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: #9ca3af; font-weight: 600; margin-bottom: 14px; }
+.gauge-track { height: 10px; background: #f3f4f6; border-radius: 5px; overflow: hidden; margin: 14px 0 6px 0; }
+.gauge-ticks { display: flex; justify-content: space-between; font-size: 0.68rem; color: #9ca3af; }
+
+/* PROB */
+.prob-card { background: white; border-radius: 18px; padding: 18px 20px; border: 1px solid #eef1f5; box-shadow: 0 2px 10px rgba(0,0,0,0.04); margin-bottom: 14px; }
+.prob-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: #9ca3af; font-weight: 600; margin-bottom: 14px; }
+.prob-track { height: 8px; background: #f3f4f6; border-radius: 4px; overflow: hidden; margin-bottom: 14px; }
+
+/* REPORT */
+.report-card { background: white; border-radius: 18px; padding: 18px 20px; border: 1px solid #eef1f5; box-shadow: 0 2px 10px rgba(0,0,0,0.04); margin-bottom: 14px; }
+.report-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: #9ca3af; font-weight: 600; margin-bottom: 14px; }
+.report-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f9fafb; }
+.report-row:last-child { border-bottom: none; }
+.report-key { font-size: 0.82rem; color: #6b7280; }
+.report-val { font-size: 0.82rem; font-weight: 600; color: #1a1a2e; }
+.rb { font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; font-weight: 600; margin-left: 6px; }
+.rb-g { background: #d1fae5; color: #065f46; }
+.rb-r { background: #fee2e2; color: #991b1b; }
+.rb-y { background: #fef3c7; color: #92400e; }
+
+/* DOCTOR */
+.doctor-card { background: linear-gradient(135deg, #eff6ff, #dbeafe); border: 1px solid #bfdbfe; border-radius: 18px; padding: 18px 20px; display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+.doctor-avatar { width: 50px; height: 50px; border-radius: 16px; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; box-shadow: 0 4px 14px rgba(37,99,235,0.3); }
+.doctor-name { font-size: 0.95rem; font-weight: 700; color: #1a1a2e; }
+.doctor-role { font-size: 0.75rem; color: #2563eb; margin-bottom: 6px; font-weight: 600; }
+.doctor-text { font-size: 0.82rem; color: #6b7280; line-height: 1.5; }
+
+/* TIPS */
+.tip-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #f9fafb; border-radius: 10px; margin-bottom: 7px; border: 1px solid #f3f4f6; transition: all 0.2s; }
+.tip-row:hover { background: #eff6ff; border-color: #bfdbfe; }
+.tip-ico { font-size: 1rem; width: 22px; text-align: center; }
+.tip-txt { font-size: 0.82rem; color: #4b5563; }
+
+/* STREAMLIT OVERRIDES */
+.stSlider label { color: #374151 !important; font-size: 0.82rem !important; font-weight: 500 !important; }
+.stSelectbox label { color: #374151 !important; font-size: 0.82rem !important; font-weight: 500 !important; }
+.stSelectbox > div > div { background: #f9fafb !important; border: 1px solid #e5e7eb !important; border-radius: 10px !important; color: #1a1a2e !important; }
+.stRadio label { color: #374151 !important; font-size: 0.85rem !important; font-weight: 500 !important; }
+.stRadio > div { background: #f9fafb; border-radius: 12px; padding: 10px; border: 1px solid #e5e7eb; }
+.stRadio [data-testid="stMarkdownContainer"] p { color: #374151 !important; font-size: 0.85rem !important; }
+.stButton > button { background: linear-gradient(135deg, #2563eb, #1d4ed8) !important; color: white !important; font-size: 1rem !important; font-weight: 700 !important; border-radius: 14px !important; border: none !important; padding: 14px 30px !important; width: 100% !important; box-shadow: 0 5px 20px rgba(37,99,235,0.35) !important; transition: all 0.3s !important; }
+.stButton > button:hover { transform: translateY(-2px) !important; box-shadow: 0 10px 30px rgba(37,99,235,0.45) !important; }
+[data-testid="metric-container"] { background: white !important; border: 1px solid #eef1f5 !important; border-radius: 14px !important; padding: 14px !important; box-shadow: 0 2px 8px rgba(0,0,0,0.04) !important; }
+[data-testid="metric-container"] label { color: #9ca3af !important; font-size: 0.75rem !important; }
+[data-testid="metric-container"] [data-testid="stMetricValue"] { color: #1a1a2e !important; font-size: 1.4rem !important; font-weight: 800 !important; }
+hr { border-color: #f3f4f6 !important; }
+</style>
+""", unsafe_allow_html=True)
+
+# -------------------- Train Models --------------------
+@st.cache_resource
+def train_models():
+    df = pd.read_csv("heart.csv")
+    X = df.drop('target', axis=1)
+    y = df['target']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    scaler = StandardScaler()
+    X_train = scaler.fit_transform(X_train)
+    X_test = scaler.transform(X_test)
+    lr = LogisticRegression(max_iter=200)
+    lr.fit(X_train, y_train)
+    lr_acc = lr.score(X_test, y_test)
+    knn = KNeighborsClassifier(n_neighbors=5)
+    knn.fit(X_train, y_train)
+    knn_acc = knn.score(X_test, y_test)
+    return lr, knn, scaler, lr_acc, knn_acc
+
+lr_model, knn_model, scaler, lr_acc, knn_acc = train_models()
