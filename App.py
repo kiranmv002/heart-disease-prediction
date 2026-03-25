@@ -1,6 +1,6 @@
 # ============================================================
-# Heart Disease Prediction - Streamlit Web App
-# Author: M V Kiran
+# Heart Disease Prediction - ProHealth Style Dashboard
+# Author: M V Kiran | Version: Final
 # ============================================================
 
 import streamlit as st
@@ -10,122 +10,95 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
+import time
 
-# -------------------- Page Config --------------------
 st.set_page_config(
-    page_title="Heart Disease Prediction",
-    page_icon="❤️",
-    layout="centered"
+    page_title="CardioAI - Heart Disease Prediction",
+    page_icon="🫀",
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
-# -------------------- Load & Train Model --------------------
-@st.cache_resource
-def train_models():
-    df = pd.read_csv("heart.csv")
-    X = df.drop('target', axis=1)
-    y = df['target']
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+* { font-family: 'Inter', sans-serif !important; box-sizing: border-box; }
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+.stApp { background: #f0f4f8; }
+#MainMenu, footer, header, [data-testid="stToolbar"] { display: none !important; }
+.block-container { padding: 0 !important; max-width: 100% !important; }
+[data-testid="stSidebarNav"] { display: none !important; }
 
-    scaler = StandardScaler()
-    X_train = scaler.fit_transform(X_train)
-    X_test = scaler.transform(X_test)
+/* SIDEBAR */
+[data-testid="stSidebar"] {
+    background: #ffffff !important;
+    border-right: 1px solid #e8edf2 !important;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.05) !important;
+}
+[data-testid="stSidebar"] > div { padding: 0 !important; }
 
-    lr = LogisticRegression(max_iter=200)
-    lr.fit(X_train, y_train)
-    lr_acc = lr.score(X_test, y_test)
+/* SIDEBAR ITEMS */
+.sb-logo { padding: 24px 20px 18px; border-bottom: 1px solid #f3f4f6; margin-bottom: 8px; text-align:center; }
+.sb-logo-icon { font-size: 2.5rem; }
+.sb-brand { font-size: 1.2rem; font-weight: 900; color: #1a1a2e; margin-top: 6px; }
+.sb-brand span { color: #2563eb; }
+.sb-sub { font-size: 0.72rem; color: #9ca3af; margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
+.sb-sec { padding: 14px 16px 6px; font-size: 0.65rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
+.sb-item { display: flex; align-items: center; gap: 10px; padding: 10px 18px; margin: 2px 8px; border-radius: 12px; cursor: pointer; font-size: 0.88rem; font-weight: 500; color: #6b7280; border: 1px solid transparent; transition: all 0.2s; }
+.sb-item:hover { background: #f3f4f6; color: #1a1a2e; }
+.sb-item.active { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; font-weight: 600; }
+.sb-ico { font-size: 1rem; width: 20px; text-align: center; }
+.sb-bdg { margin-left: auto; font-size: 0.65rem; font-weight: 700; padding: 2px 7px; border-radius: 10px; }
+.sb-bdg-blue { background: #dbeafe; color: #1d4ed8; }
+.sb-bdg-red { background: #fee2e2; color: #991b1b; }
+.sb-div { height: 1px; background: #f3f4f6; margin: 8px 16px; }
+.sb-stats { margin: 10px 12px; background: #f9fafb; border-radius: 14px; padding: 14px; border: 1px solid #f3f4f6; }
+.sb-stat-row { display: flex; justify-content: space-between; padding: 5px 0; }
+.sb-stat-k { font-size: 0.78rem; color: #6b7280; }
+.sb-stat-v { font-size: 0.82rem; font-weight: 700; color: #2563eb; }
+.sb-user { margin: 10px 12px; background: #eff6ff; border-radius: 14px; padding: 14px; border: 1px solid #bfdbfe; display: flex; align-items: center; gap: 10px; }
+.sb-uav { width: 38px; height: 38px; background: linear-gradient(135deg,#2563eb,#1d4ed8); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.sb-uname { font-size: 0.88rem; font-weight: 700; color: #1a1a2e; }
+.sb-urole { font-size: 0.72rem; color: #2563eb; }
+.sb-foot { text-align: center; padding: 16px; font-size: 0.7rem; color: #9ca3af; }
 
-    knn = KNeighborsClassifier(n_neighbors=5)
-    knn.fit(X_train, y_train)
-    knn_acc = knn.score(X_test, y_test)
+/* NAVBAR */
+.navbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 36px; background: #ffffff; border-bottom: 1px solid #eef1f5; box-shadow: 0 2px 12px rgba(0,0,0,0.04); position: sticky; top: 0; z-index: 999; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-icon { width: 36px; height: 36px; background: linear-gradient(135deg, #2563eb, #1d4ed8); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.brand-name { font-size: 1.15rem; font-weight: 800; color: #1a1a2e; }
+.brand-name span { color: #2563eb; }
+.nav-tabs { display: flex; gap: 4px; }
+.nav-tab { padding: 7px 18px; border-radius: 20px; font-size: 0.88rem; font-weight: 500; color: #6b7280; cursor: pointer; border: 1px solid transparent; background: transparent; }
+.nav-tab.active { background: #2563eb; color: white; border-color: #2563eb; }
+.nav-right { display: flex; align-items: center; gap: 12px; }
+.nav-icon-btn { width: 36px; height: 36px; border-radius: 50%; background: #f3f4f6; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; }
+.nav-avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; color: white; border: 2px solid #dbeafe; }
+.nav-consult { background: #2563eb; color: white !important; padding: 9px 20px; border-radius: 25px; font-size: 0.88rem; font-weight: 600; border: none; cursor: pointer; box-shadow: 0 4px 14px rgba(37,99,235,0.35); }
 
-    return lr, knn, scaler, lr_acc, knn_acc
+/* STAT CARDS */
+.stat-card { background: white; border-radius: 18px; padding: 18px 20px; border: 1px solid #eef1f5; box-shadow: 0 2px 10px rgba(0,0,0,0.04); transition: all 0.25s; }
+.stat-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); transform: translateY(-2px); }
+.stat-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 12px; }
+.stat-num { font-size: 1.7rem; font-weight: 900; color: #1a1a2e; line-height: 1; }
+.stat-lbl { font-size: 0.75rem; color: #9ca3af; margin-top: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+.stat-change { font-size: 0.75rem; font-weight: 600; margin-top: 6px; color: #10b981; }
 
-lr_model, knn_model, scaler, lr_acc, knn_acc = train_models()
+/* HEART VISUAL */
+.heart-visual { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-radius: 24px; padding: 30px; text-align: center; border: 1px solid #bfdbfe; position: relative; overflow: hidden; }
+.heart-bg { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 180px; opacity: 0.07; animation: softpulse 2s ease-in-out infinite; }
+@keyframes softpulse { 0%,100% { transform: translate(-50%,-50%) scale(1); } 50% { transform: translate(-50%,-50%) scale(1.05); } }
+.heart-main { font-size: 90px; position: relative; z-index: 1; animation: heartbeat 1.5s ease-in-out infinite; filter: drop-shadow(0 8px 24px rgba(37,99,235,0.25)); }
+@keyframes heartbeat { 0%,100% { transform: scale(1); } 14% { transform: scale(1.1); } 28% { transform: scale(1); } 42% { transform: scale(1.06); } }
+.heart-stat-pill { display: inline-flex; align-items: center; gap: 8px; background: white; border-radius: 20px; padding: 8px 16px; margin: 6px 4px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); font-size: 0.82rem; font-weight: 600; color: #1a1a2e; border: 1px solid #eef1f5; }
 
-# -------------------- Header --------------------
-st.title("❤️ Heart Disease Prediction")
-st.markdown("### Predict whether a patient has heart disease using Machine Learning")
-st.markdown("---")
-
-# -------------------- Model Info --------------------
-col1, col2 = st.columns(2)
-with col1:
-    st.metric("Logistic Regression Accuracy", f"{lr_acc*100:.2f}%")
-with col2:
-    st.metric("KNN Accuracy (K=5)", f"{knn_acc*100:.2f}%")
-
-st.markdown("---")
-
-# -------------------- Input Form --------------------
-st.subheader("📋 Enter Patient Details")
-
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    age = st.slider("Age", 29, 77, 50)
-    sex = st.selectbox("Sex", options=[0, 1], format_func=lambda x: "Female" if x == 0 else "Male")
-    cp = st.selectbox("Chest Pain Type", options=[0, 1, 2, 3],
-                      format_func=lambda x: ["Typical Angina", "Atypical Angina", "Non-anginal Pain", "Asymptomatic"][x])
-    trestbps = st.slider("Resting Blood Pressure", 94, 200, 120)
-    chol = st.slider("Cholesterol (mg/dl)", 126, 564, 200)
-
-with col2:
-    fbs = st.selectbox("Fasting Blood Sugar > 120 mg/dl", options=[0, 1],
-                       format_func=lambda x: "No" if x == 0 else "Yes")
-    restecg = st.selectbox("Resting ECG Results", options=[0, 1, 2],
-                           format_func=lambda x: ["Normal", "ST-T Abnormality", "Left Ventricular Hypertrophy"][x])
-    thalach = st.slider("Max Heart Rate Achieved", 71, 202, 150)
-    exang = st.selectbox("Exercise Induced Angina", options=[0, 1],
-                         format_func=lambda x: "No" if x == 0 else "Yes")
-
-with col3:
-    oldpeak = st.slider("ST Depression (Oldpeak)", 0.0, 6.2, 1.0, step=0.1)
-    slope = st.selectbox("Slope of ST Segment", options=[0, 1, 2],
-                         format_func=lambda x: ["Upsloping", "Flat", "Downsloping"][x])
-    ca = st.selectbox("No. of Major Vessels (0-4)", options=[0, 1, 2, 3, 4])
-    thal = st.selectbox("Thalassemia", options=[0, 1, 2, 3],
-                        format_func=lambda x: ["Normal", "Fixed Defect", "Reversible Defect", "Unknown"][x])
-
-# -------------------- Model Selection --------------------
-st.markdown("---")
-st.subheader("🤖 Select Model")
-model_choice = st.radio("Choose Algorithm:", ["Logistic Regression", "KNN (K=5)"], horizontal=True)
-
-# -------------------- Predict Button --------------------
-st.markdown("---")
-if st.button("🔍 Predict", use_container_width=True):
-
-    input_data = np.array([[age, sex, cp, trestbps, chol, fbs,
-                            restecg, thalach, exang, oldpeak, slope, ca, thal]])
-
-    input_scaled = scaler.transform(input_data)
-
-    if model_choice == "Logistic Regression":
-        prediction = lr_model.predict(input_scaled)[0]
-        probability = lr_model.predict_proba(input_scaled)[0]
-    else:
-        prediction = knn_model.predict(input_scaled)[0]
-        probability = knn_model.predict_proba(input_scaled)[0]
-
-    st.markdown("---")
-    st.subheader("🩺 Prediction Result")
-
-    if prediction == 1:
-        st.error("⚠️ **Heart Disease Detected!**")
-        st.warning("Please consult a doctor immediately.")
-    else:
-        st.success("✅ **No Heart Disease Detected!**")
-        st.info("Keep maintaining a healthy lifestyle!")
-
-    # Probability
-    col1, col2 = st.columns(2)
-    with col1:
-        st.metric("No Disease Probability", f"{probability[0]*100:.2f}%")
-    with col2:
-        st.metric("Disease Probability", f"{probability[1]*100:.2f}%")
-
-# -------------------- Footer --------------------
-st.markdown("---")
-st.markdown("**👨‍💻 Developed by M V Kiran** | Heart Disease Prediction using ML")
-st.markdown("> ⚠️ *This app is for educational purposes only. Not a substitute for medical advice.*")
+/* VITAL CARDS */
+.vital-card { background: white; border-radius: 16px; padding: 16px 18px; border: 1px solid #eef1f5; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; align-items: center; gap: 14px; transition: all 0.2s; }
+.vital-card:hover { border-color: #bfdbfe; box-shadow: 0 4px 16px rgba(37,99,235,0.08); }
+.vital-dot { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+.vital-name { font-size: 0.78rem; color: #9ca3af; font-weight: 500; }
+.vital-val { font-size: 1.05rem; font-weight: 700; color: #1a1a2e; }
+.vital-badge { margin-left: auto; font-size: 0.7rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+.vb-normal { background: #d1fae5; color: #065f46; }
+.vb-high { background: #fee2e2; color: #991b1b; }
+.vb-warn { background: #fef3c7; color: #92400e; }
