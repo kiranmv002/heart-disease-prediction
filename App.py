@@ -234,3 +234,25 @@ with st.sidebar:
     </div>
     <div class='sb-foot'>CardioAI v1.0 · Educational Use Only</div>
     """, unsafe_allow_html=True)
+    
+# ==================== NAVBAR ====================
+st.markdown("""
+<div class='navbar'>
+    <div class='brand'>
+        <div class='brand-icon'>🫀</div>
+        <div class='brand-name'>Cardio<span>AI</span></div>
+    </div>
+    <div class='nav-tabs'>
+        <div class='nav-tab active'>Overview</div>
+        <div class='nav-tab'>Document</div>
+        <div class='nav-tab'>Messages</div>
+        <div class='nav-tab'>Labs</div>
+    </div>
+    <div class='nav-right'>
+        <div class='nav-icon-btn'>💬</div>
+        <div class='nav-icon-btn'>🔔</div>
+        <button class='nav-consult'>Consultation ↗</button>
+        <div class='nav-avatar'>MK</div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
