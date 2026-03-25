@@ -195,3 +195,42 @@ def train_models():
     return lr, knn, scaler, lr_acc, knn_acc
 
 lr_model, knn_model, scaler, lr_acc, knn_acc = train_models()
+# ==================== SIDEBAR ====================
+with st.sidebar:
+    st.markdown(f"""
+    <div class='sb-logo'>
+        <div class='sb-logo-icon'>🫀</div>
+        <div class='sb-brand'>Cardio<span>AI</span></div>
+        <div class='sb-sub'>Medical AI Platform</div>
+    </div>
+
+    <div class='sb-sec'>Main Menu</div>
+    <div class='sb-item active'><span class='sb-ico'>📊</span> Overview <span class='sb-bdg sb-bdg-blue'>Live</span></div>
+    <div class='sb-item'><span class='sb-ico'>🫀</span> Heart Analysis</div>
+    <div class='sb-item'><span class='sb-ico'>📋</span> Patient Reports <span class='sb-bdg sb-bdg-red'>3</span></div>
+    <div class='sb-item'><span class='sb-ico'>📅</span> History</div>
+    <div class='sb-item'><span class='sb-ico'>📈</span> Analytics</div>
+
+    <div class='sb-div'></div>
+    <div class='sb-sec'>Tools</div>
+    <div class='sb-item'><span class='sb-ico'>🤖</span> AI Models</div>
+    <div class='sb-item'><span class='sb-ico'>🔬</span> Lab Results <span class='sb-bdg sb-bdg-red'>New</span></div>
+    <div class='sb-item'><span class='sb-ico'>💊</span> Medications</div>
+    <div class='sb-item'><span class='sb-ico'>⚙️</span> Settings</div>
+
+    <div class='sb-div'></div>
+    <div class='sb-sec'>Model Performance</div>
+    <div class='sb-stats'>
+        <div class='sb-stat-row'><span class='sb-stat-k'>🔵 Logistic Reg</span><span class='sb-stat-v'>{lr_acc*100:.2f}%</span></div>
+        <div class='sb-stat-row'><span class='sb-stat-k'>🟢 KNN (K=5)</span><span class='sb-stat-v'>{knn_acc*100:.2f}%</span></div>
+        <div class='sb-stat-row'><span class='sb-stat-k'>🗃️ Patients</span><span class='sb-stat-v'>1,025</span></div>
+        <div class='sb-stat-row'><span class='sb-stat-k'>🔬 Features</span><span class='sb-stat-v'>13</span></div>
+    </div>
+
+    <div class='sb-div'></div>
+    <div class='sb-user'>
+        <div class='sb-uav'>👨‍⚕️</div>
+        <div><div class='sb-uname'>M V Kiran</div><div class='sb-urole'>ML Developer · 2025</div></div>
+    </div>
+    <div class='sb-foot'>CardioAI v1.0 · Educational Use Only</div>
+    """, unsafe_allow_html=True)
