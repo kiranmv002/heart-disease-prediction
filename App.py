@@ -552,6 +552,6 @@ else:
             <div style='font-size:1.1rem; font-weight:800; color:#2563eb; margin-top:4px;'>M V Kiran</div>
             <div style='font-size:0.72rem; color:#9ca3af; margin-top:2px;'>AI & ML Project · 2025</div>
         </div>
-        """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
