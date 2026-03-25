@@ -359,3 +359,199 @@ with fcol:
     """, unsafe_allow_html=True)
 
     predict_btn = st.button("🫀 Analyze Heart Health Now")
+
+
+# ==================== RESULTS SECTION ====================
+st.markdown("<div style='height:28px'></div>", unsafe_allow_html=True)
+st.markdown("""
+<div style='margin-bottom:20px;'>
+    <div style='font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:#9ca3af; font-weight:600;'>AI Diagnosis Panel</div>
+    <div style='font-size:1.5rem; font-weight:800; color:#1a1a2e; margin-top:4px;'>Prediction Results</div>
+</div>
+""", unsafe_allow_html=True)
+
+# Live vitals row
+bp_b = "vb-high" if trestbps > 140 else "vb-normal"
+bp_t = "High" if trestbps > 140 else "Normal"
+hr_b = "vb-high" if thalach > 180 else "vb-normal"
+hr_t = "High" if thalach > 180 else "Normal"
+ch_b = "vb-high" if chol > 240 else "vb-normal"
+ch_t = "High" if chol > 240 else "Normal"
+ag_b = "vb-warn" if age > 60 else "vb-normal"
+ag_t = "Senior" if age > 60 else "Adult"
+
+vc1, vc2, vc3, vc4 = st.columns(4)
+with vc1:
+    st.markdown(f"""<div class='vital-card'><div class='vital-dot' style='background:#fee2e2;'>🩸</div><div><div class='vital-name'>Blood Pressure</div><div class='vital-val'>{trestbps} mmHg</div></div><span class='vital-badge {bp_b}'>{bp_t}</span></div>""", unsafe_allow_html=True)
+with vc2:
+    st.markdown(f"""<div class='vital-card'><div class='vital-dot' style='background:#d1fae5;'>💓</div><div><div class='vital-name'>Max Heart Rate</div><div class='vital-val'>{thalach} bpm</div></div><span class='vital-badge {hr_b}'>{hr_t}</span></div>""", unsafe_allow_html=True)
+with vc3:
+    st.markdown(f"""<div class='vital-card'><div class='vital-dot' style='background:#fef3c7;'>🧪</div><div><div class='vital-name'>Cholesterol</div><div class='vital-val'>{chol} mg/dl</div></div><span class='vital-badge {ch_b}'>{ch_t}</span></div>""", unsafe_allow_html=True)
+with vc4:
+    st.markdown(f"""<div class='vital-card'><div class='vital-dot' style='background:#eff6ff;'>🎂</div><div><div class='vital-name'>Patient Age</div><div class='vital-val'>{age} years</div></div><span class='vital-badge {ag_b}'>{ag_t}</span></div>""", unsafe_allow_html=True)
+
+st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
+
+if predict_btn:
+    with st.spinner("🔍 Running AI analysis..."):
+        time.sleep(1.2)
+
+    input_data = np.array([[age, sex, cp, trestbps, chol, fbs,
+                            restecg, thalach, exang, oldpeak, slope, ca, thal]])
+    input_scaled = scaler.transform(input_data)
+
+    if model_choice == "Logistic Regression":
+        prediction = lr_model.predict(input_scaled)[0]
+        probability = lr_model.predict_proba(input_scaled)[0]
+        model_acc = lr_acc
+    else:
+        prediction = knn_model.predict(input_scaled)[0]
+        probability = knn_model.predict_proba(input_scaled)[0]
+        model_acc = knn_acc
+
+    no_pct = probability[0] * 100
+    yes_pct = probability[1] * 100
+    risk = int(yes_pct)
+
+    res1, res2, res3 = st.columns([1, 1, 1])
+
+    with res1:
+        # Result + Gauge
+        if prediction == 1:
+            st.markdown(f"""
+            <div class='result-danger'>
+                <div class='result-emoji'>⚠️</div>
+                <div class='result-title-danger'>Heart Disease Detected</div>
+                <div class='result-sub'>High cardiovascular risk · {model_choice}</div>
+            </div>""", unsafe_allow_html=True)
+            gauge_color = "#ef4444"
+            gauge_label = "🔴 HIGH RISK"
+        else:
+            st.markdown(f"""
+            <div class='result-safe'>
+                <div class='result-emoji'>✅</div>
+                <div class='result-title-safe'>No Heart Disease</div>
+                <div class='result-sub'>Low cardiovascular risk · {model_choice}</div>
+            </div>""", unsafe_allow_html=True)
+            gauge_color = "#10b981"
+            gauge_label = "🟢 LOW RISK"
+
+        # Gauge
+        st.markdown(f"""
+        <div class='gauge-card'>
+            <div class='gauge-title'>⚡ Risk Gauge Meter</div>
+            <div style='text-align:center;'>
+                <div style='font-size:3rem; font-weight:900; color:{gauge_color}; line-height:1;'>{risk}%</div>
+                <div style='font-size:0.9rem; font-weight:700; color:{gauge_color}; margin-top:6px;'>{gauge_label}</div>
+            </div>
+            <div class='gauge-track'><div style='height:100%; width:{risk}%; background:linear-gradient(90deg,#10b981,#f59e0b,#ef4444); border-radius:5px;'></div></div>
+            <div class='gauge-ticks'><span>0% Safe</span><span>50%</span><span>100% Danger</span></div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # Probability bars
+        st.markdown(f"""
+        <div class='prob-card'>
+            <div class='prob-title'>📊 Probability Distribution</div>
+            <div style='display:flex; justify-content:space-between; margin-bottom:5px;'><span style='font-size:0.82rem; color:#374151;'>🟢 Healthy (No Disease)</span><span style='font-size:0.82rem; font-weight:700; color:#10b981;'>{no_pct:.1f}%</span></div>
+            <div class='prob-track'><div style='height:100%;width:{no_pct}%;background:linear-gradient(90deg,#10b981,#34d399);border-radius:4px;'></div></div>
+            <div style='display:flex; justify-content:space-between; margin-bottom:5px;'><span style='font-size:0.82rem; color:#374151;'>🔴 At Risk (Disease)</span><span style='font-size:0.82rem; font-weight:700; color:#ef4444;'>{yes_pct:.1f}%</span></div>
+            <div class='prob-track'><div style='height:100%;width:{yes_pct}%;background:linear-gradient(90deg,#ef4444,#f87171);border-radius:4px;'></div></div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with res2:
+        # Report card
+        bp_rb = "rb-r" if trestbps > 140 else "rb-g"
+        ch_rb = "rb-r" if chol > 240 else "rb-g"
+        hr_rb = "rb-r" if thalach > 180 else "rb-g"
+        op_rb = "rb-r" if oldpeak > 3 else "rb-g"
+        ag_rb = "rb-y" if age > 60 else "rb-g"
+        st.markdown(f"""
+        <div class='report-card'>
+            <div class='report-title'>📋 Patient Report Card</div>
+            <div class='report-row'><span class='report-key'>Age</span><span class='report-val'>{age} yrs <span class='rb {ag_rb}'>{"Senior" if age>60 else "Adult"}</span></span></div>
+            <div class='report-row'><span class='report-key'>Sex</span><span class='report-val'>{"Female" if sex==0 else "Male"}</span></div>
+            <div class='report-row'><span class='report-key'>Blood Pressure</span><span class='report-val'>{trestbps} mmHg <span class='rb {bp_rb}'>{"High" if trestbps>140 else "Normal"}</span></span></div>
+            <div class='report-row'><span class='report-key'>Cholesterol</span><span class='report-val'>{chol} mg/dl <span class='rb {ch_rb}'>{"High" if chol>240 else "Normal"}</span></span></div>
+            <div class='report-row'><span class='report-key'>Max Heart Rate</span><span class='report-val'>{thalach} bpm <span class='rb {hr_rb}'>{"High" if thalach>180 else "Normal"}</span></span></div>
+            <div class='report-row'><span class='report-key'>ST Depression</span><span class='report-val'>{oldpeak} <span class='rb {op_rb}'>{"High" if oldpeak>3 else "Normal"}</span></span></div>
+            <div class='report-row'><span class='report-key'>Chest Pain</span><span class='report-val'>{"Typical Angina" if cp==0 else "Atypical" if cp==1 else "Non-anginal" if cp==2 else "Asymptomatic"}</span></div>
+            <div class='report-row'><span class='report-key'>Algorithm</span><span class='report-val' style='color:#2563eb;'>{model_choice}</span></div>
+            <div class='report-row'><span class='report-key'>Model Accuracy</span><span class='report-val' style='color:#2563eb;'>{model_acc*100:.2f}%</span></div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with res3:
+        # Doctor card + tips
+        if prediction == 1:
+            st.markdown("""
+            <div class='doctor-card'>
+                <div class='doctor-avatar'>👨‍⚕️</div>
+                <div>
+                    <div class='doctor-name'>Dr. AI Recommendation</div>
+                    <div class='doctor-role'>Cardiologist · AI-Powered</div>
+                    <div class='doctor-text'>High cardiovascular risk detected. Immediate consultation with a cardiologist is strongly advised. Follow a strict low-sodium, low-fat diet.</div>
+                </div>
+            </div>
+            <div class='tip-row'><span class='tip-ico'>🏥</span><span class='tip-txt'>Visit a cardiologist immediately</span></div>
+            <div class='tip-row'><span class='tip-ico'>💊</span><span class='tip-txt'>Take medications as prescribed</span></div>
+            <div class='tip-row'><span class='tip-ico'>🥗</span><span class='tip-txt'>Low-sodium, heart-healthy diet</span></div>
+            <div class='tip-row'><span class='tip-ico'>🚫</span><span class='tip-txt'>Avoid smoking & alcohol completely</span></div>
+            <div class='tip-row'><span class='tip-ico'>😴</span><span class='tip-txt'>Rest well — 7–8 hours sleep</span></div>
+            """, unsafe_allow_html=True)
+        else:
+            st.markdown("""
+            <div class='doctor-card'>
+                <div class='doctor-avatar'>👩‍⚕️</div>
+                <div>
+                    <div class='doctor-name'>Dr. AI Recommendation</div>
+                    <div class='doctor-role'>Cardiologist · AI-Powered</div>
+                    <div class='doctor-text'>No significant risk detected. Continue a healthy lifestyle with regular exercise, balanced diet, and checkups every 6 months.</div>
+                </div>
+            </div>
+            <div class='tip-row'><span class='tip-ico'>🏃</span><span class='tip-txt'>Exercise 30 mins daily</span></div>
+            <div class='tip-row'><span class='tip-ico'>🥗</span><span class='tip-txt'>Maintain a balanced diet</span></div>
+            <div class='tip-row'><span class='tip-ico'>🩺</span><span class='tip-txt'>Regular checkups every 6 months</span></div>
+            <div class='tip-row'><span class='tip-ico'>😌</span><span class='tip-txt'>Manage stress with meditation</span></div>
+            <div class='tip-row'><span class='tip-ico'>🚭</span><span class='tip-txt'>Stay smoke & alcohol free</span></div>
+            """, unsafe_allow_html=True)
+
+else:
+    # Pending state - 3 columns
+    p1, p2, p3 = st.columns(3)
+    with p1:
+        st.markdown("""
+        <div class='result-pending'>
+            <div class='result-emoji'>🫀</div>
+            <div class='result-title-pending'>Awaiting Analysis</div>
+            <div class='result-sub'>Fill in patient details above and click Analyze button</div>
+        </div>""", unsafe_allow_html=True)
+    with p2:
+        st.markdown(f"""
+        <div class='report-card'>
+            <div class='report-title'>🤖 About CardioAI</div>
+            <div class='tip-row'><span class='tip-ico'>📊</span><span class='tip-txt'>Trained on 1,025 patient records</span></div>
+            <div class='tip-row'><span class='tip-ico'>🎯</span><span class='tip-txt'>Up to {knn_acc*100:.1f}% prediction accuracy</span></div>
+            <div class='tip-row'><span class='tip-ico'>⚡</span><span class='tip-txt'>Instant real-time AI analysis</span></div>
+            <div class='tip-row'><span class='tip-ico'>🔬</span><span class='tip-txt'>Analyzes 13 clinical features</span></div>
+            <div class='tip-row'><span class='tip-ico'>🛡️</span><span class='tip-txt'>Educational purposes only</span></div>
+        </div>""", unsafe_allow_html=True)
+    with p3:
+        st.markdown("""
+        <div class='doctor-card'>
+            <div class='doctor-avatar'>👨‍⚕️</div>
+            <div>
+                <div class='doctor-name'>CardioAI System</div>
+                <div class='doctor-role'>Heart Disease Prediction · 2025</div>
+                <div class='doctor-text'>AI-powered tool using Logistic Regression & KNN algorithms trained on the UCI Heart Disease Dataset.</div>
+            </div>
+        </div>
+        <div style='text-align:center; padding:16px; background:#f9fafb; border-radius:14px; border:1px solid #f3f4f6;'>
+            <div style='font-size:0.7rem; color:#9ca3af; text-transform:uppercase; letter-spacing:1px;'>Developed by</div>
+            <div style='font-size:1.1rem; font-weight:800; color:#2563eb; margin-top:4px;'>M V Kiran</div>
+            <div style='font-size:0.72rem; color:#9ca3af; margin-top:2px;'>AI & ML Project · 2025</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+st.markdown("</div>", unsafe_allow_html=True)
